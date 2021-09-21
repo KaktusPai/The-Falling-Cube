@@ -36,17 +36,19 @@ public class PlayerMechanics : MonoBehaviour
 
         if (placingScore == 0)
         {
+            // Movement inputs
             movement.x = Input.GetAxisRaw("Horizontal");
             movement.y = Input.GetAxisRaw("Vertical");
         } else
         {
+            // Can't move when placing
             movement = Vector3.zero;
+            print("Placing 0 cant move");
         }
 
         if (Input.GetButton("Fire1") && spikes < maxSpikes)
         {
             placingScore += 1 * Time.deltaTime;
-            Debug.Log(placingScore);
             if (placingScore >= maxPlaceTime)
             {
                 Instantiate(spike, this.transform.position, this.transform.rotation);
