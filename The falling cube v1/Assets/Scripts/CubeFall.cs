@@ -35,28 +35,31 @@ public class CubeFall : MonoBehaviour
 
     IEnumerator FallInRandomDirection()
     {
-        // BEFPRE FALLING WAIT TIME
+        // BEFORE FALLING WAIT TIME
         falling = false;
+        print("THE CUBE RESTS, FOR NOW");
+        // CHOOSE RANDOM DIRECTION between up, -up (down), right and -right(left)
         Vector3 direction = Utility.Choose(transform.up, transform.right, -transform.up, -transform.right);
+        //Variables for begin and end positon
         Vector3 startPos;
         Vector3 endPos;
-        startPos = transform.position;
-        endPos = startPos + direction * cellSize;
-
-        if (endPos.x < -6 || endPos.x > 8 || endPos.y < -5 || endPos.y > 4)
+        startPos = transform.position; // startPos is the current position
+        endPos = startPos + direction * cellSize; //endPos is the next cell in the new random direction
+        if (endPos.x < -6 || endPos.x > 8 || endPos.y < -5 || endPos.y > 4) //If endPos is near the edges -  
         {
-            StartCoroutine(FallInRandomDirection());
-            yield break;
+            StartCoroutine(FallInRandomDirection()); // - restart the process
+             yield break;
         }
-
+        // TURN THE EYE TO NEW POSITION
         careful.SetActive(true);
         careful.transform.position = endPos;
 
         // AFTER FALLING WAIT TIME
-        yield return new WaitForSeconds(timeBeforeFall); 
+        yield return new WaitForSeconds(timeBeforeFall);
 
+        falling = true;
+        print("THE CUBE FALLS");
         careful.SetActive(false);
-
         float t = 0;
 
         while (t < 1)

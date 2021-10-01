@@ -10,8 +10,10 @@ public class CubeColliding : MonoBehaviour
     }
     void OnTriggerEnter2D(Collider2D collision)
     {
+        print("collided with " + collision.tag);
         if (CubeFall.falling == true)
         {
+
             if (collision.gameObject.tag == "Spike")
             {
                 Destroy(collision.gameObject);

@@ -7,6 +7,8 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public Text finalText;
+    public Text finalTextOT;
+    public GameObject endUI;
     public Text housesText;
     public Slider healthSlider;
     public Button retryButton;
@@ -20,9 +22,8 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         dead = false;
-        finalText.gameObject.SetActive(false);
+        endUI.gameObject.SetActive(false);
         cubeHealth = cubeMaxHealth;
-        retryButton.gameObject.SetActive(false);
         houses = 8;
         cubeHealth = cubeMaxHealth;
         PlayerMechanics.spikes = 2;
@@ -46,16 +47,16 @@ public class GameManager : MonoBehaviour
 
     void Lose()
     {
-        finalText.gameObject.SetActive(true);
+        endUI.gameObject.SetActive(true);
         finalText.text = "You lose";
-        retryButton.gameObject.SetActive(true);
+        finalTextOT.text = "You lose";
     }
 
     void Win()
     {
-        finalText.gameObject.SetActive(true);
+        endUI.gameObject.SetActive(true);
         finalText.text = "You win!";
-        retryButton.gameObject.SetActive(true);
+        finalTextOT.text = "You win!";
     }
 
     public void RestartGame()
