@@ -43,11 +43,11 @@ public class UI : MonoBehaviour
         {
             LoseUI();
         }
-        if (gm.gameLost)
+        if (gm.gameLost == true)
         {
             LoseUI();
         }
-        if (gm.gameWon == false)
+        if (gm.gameWon == true)
         {
             WinUI();
         }
@@ -55,12 +55,14 @@ public class UI : MonoBehaviour
 
     public void LoseUI() 
     {
+        print("Lose UI active");
         endUI.gameObject.SetActive(true);
         finalText.text = "You lose";
         finalTextOT.text = "You lose";
     }    
     public void WinUI() 
     {
+        print("Win UI active");
         endUI.gameObject.SetActive(true);
         finalText.text = "You win!";
         finalTextOT.text = "You win!";

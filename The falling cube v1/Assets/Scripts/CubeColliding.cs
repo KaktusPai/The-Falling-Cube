@@ -6,7 +6,7 @@ public class CubeColliding : MonoBehaviour
 {
     public GameManager gm;
     public PlayerMechanics pm;
-    public int spikeDamage = 1;
+    public int spikeDamage = 1; 
     void Start()
     {
 
