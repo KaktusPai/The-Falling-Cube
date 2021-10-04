@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class CubeColliding : MonoBehaviour
 {
+    public GameManager gm;
+    public PlayerMechanics pm;
+    public int spikeDamage = 1;
     void Start()
     {
 
@@ -17,14 +20,15 @@ public class CubeColliding : MonoBehaviour
             if (collision.gameObject.tag == "Spike")
             {
                 Destroy(collision.gameObject);
-
+                pm.spikes -= 1;
+                gm.cubeHealth -= spikeDamage;
                 print("Collided with spike");
             }
 
             if (collision.gameObject.tag == "House")
             {
                 Destroy(collision.gameObject);
-                GameManager.houses -= 1;
+                gm.houses -= 1;
 
                 print("Collided with house");
             }
@@ -32,7 +36,7 @@ public class CubeColliding : MonoBehaviour
             if (collision.gameObject.tag == "Player")
             {
                 Destroy(collision.gameObject);
-                GameManager.dead = true;
+                gm.dead = true;
                 print("Collided with player");
             }
         }

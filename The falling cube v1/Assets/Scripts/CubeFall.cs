@@ -5,6 +5,8 @@ using UnityEngine;
 public class CubeFall : MonoBehaviour
 {
     // References
+    public GameManager gm;
+    public PlayerMechanics pm;
     public AnimationCurve curve;
     public GameObject careful;
     SpriteRenderer spriteRenderer;
@@ -21,13 +23,13 @@ public class CubeFall : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.material.color = Color.white;
         StartCoroutine(FallInRandomDirection());
-        PlayerMechanics.spikes = 0;
+        pm.spikes = 0;
     }
 
     private void Update()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        if (GameManager.cubeHealth <= 0)
+        if (gm.cubeHealth <= 0)
         {
             Destroy(this);
         }

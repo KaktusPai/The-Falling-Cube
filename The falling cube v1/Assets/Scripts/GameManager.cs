@@ -6,34 +6,30 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public Text finalText;
-    public Text finalTextOT;
-    public GameObject endUI;
-    public Text housesText;
-    public Slider healthSlider;
-    public Button retryButton;
-    public static int houses = 8;
-    public int cubeMaxHealth = 9;
-    public static int cubeHealth;
-    public static bool dead = false;
-
+    //References 
     public GameObject level;
+    //Game vars
+    public int houses = 8;
+    public int cubeMaxHealth = 9;
+    public int cubeHealth;
+    // "State" bools
+    public bool dead = false;
+
+    public bool gameWon = false;
+    public bool gameLost = false;
 
     void Start()
     {
+        // Set all to default values
         dead = false;
-        endUI.gameObject.SetActive(false);
+        gameWon = false;
         cubeHealth = cubeMaxHealth;
         houses = 8;
         cubeHealth = cubeMaxHealth;
-        PlayerMechanics.spikes = 2;
     }
 
     void Update()
     {
-        healthSlider.value = cubeHealth;
-        healthSlider.maxValue = cubeMaxHealth;
-        housesText.text = "Houses: " + houses.ToString();
         if (houses <= 0 || dead == true)
         {
             Lose();
@@ -47,16 +43,12 @@ public class GameManager : MonoBehaviour
 
     void Lose()
     {
-        endUI.gameObject.SetActive(true);
-        finalText.text = "You lose";
-        finalTextOT.text = "You lose";
+        gameLost = true;
     }
 
     void Win()
     {
-        endUI.gameObject.SetActive(true);
-        finalText.text = "You win!";
-        finalTextOT.text = "You win!";
+        gameWon = true;
     }
 
     public void RestartGame()
