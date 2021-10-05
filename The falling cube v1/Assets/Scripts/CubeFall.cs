@@ -5,8 +5,11 @@ using UnityEngine;
 public class CubeFall : MonoBehaviour
 {
     // References
+    public GameManager gm;
+    public PlayerMechanics pm;
     public AnimationCurve curve;
     public GameObject careful;
+    public GameObject eye;
     SpriteRenderer spriteRenderer;
     // Falling variables
     float cellSize = 4f;
@@ -15,21 +18,32 @@ public class CubeFall : MonoBehaviour
     public float minTBF = 2f;
     public float timeDecayAmount = 0.05f;
     public static bool falling;
-
+    public Vector3 direction;
+    // Eye looking
+    public float maxEyeDistance = 0.6f;
+    public float lookSpeed = 0.0025f;
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.material.color = Color.white;
         StartCoroutine(FallInRandomDirection());
-        PlayerMechanics.spikes = 0;
+        pm.spikes = 0;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        if (GameManager.cubeHealth <= 0)
+        if (gm.cubeHealth <= 0)
         {
             Destroy(this);
+        }
+        // Turning the eye
+        if (falling == false)
+        {
+            EyeLook(direction, false);
+        } else if (falling == true)
+        {
+            EyeLook(direction, true);
         }
     }
 
@@ -39,7 +53,7 @@ public class CubeFall : MonoBehaviour
         falling = false;
         print("THE CUBE RESTS, FOR NOW");
         // CHOOSE RANDOM DIRECTION between up, -up (down), right and -right(left)
-        Vector3 direction = Utility.Choose(transform.up, transform.right, -transform.up, -transform.right);
+        direction = Utility.Choose(transform.up, transform.right, -transform.up, -transform.right);
         //Variables for begin and end positon
         Vector3 startPos;
         Vector3 endPos;
@@ -74,6 +88,23 @@ public class CubeFall : MonoBehaviour
         timeBeforeFall = Mathf.Max(timeBeforeFall, minTBF);
 
         // Repeat the couroutine instead of stopping it
-        StartCoroutine(FallInRandomDirection());
+        if (gm.gameLost == false)
+        {
+            StartCoroutine(FallInRandomDirection());
+        }
+    }
+
+    void EyeLook(Vector3 lookWhere, bool returning)
+    {
+        float xDestination = lookWhere.x * maxEyeDistance;
+        float yDestination = lookWhere.x * maxEyeDistance;
+        if (returning == false && eye.transform.position.x <= xDestination || eye.transform.position.y <= yDestination) // While not in end position
+        {
+             eye.transform.position += lookWhere * Time.deltaTime;
+        } 
+        if (returning == true && eye.transform.position != Vector3.zero) // Return to 0,0
+        {
+             eye.transform.position -= lookWhere * Time.deltaTime;
+        } 
     }
 }

@@ -6,34 +6,26 @@ using UnityEngine.SceneManagement;
 
 public class PlayerMechanics : MonoBehaviour
 {
-
+    // Player movement vars
     public float moveSpeed = 5f;
-
     public Rigidbody2D rb;
     public Transform player;
-
     Vector2 movement;
-
+    // Spike mechanic
     public GameObject spike;
-    public Text spikesLeft;
-    public Slider spikesBar;
-
-    public static int spikes = 0;
+    public int spikes = 0;
     public int maxSpikes = 3;
     public float placingScore = 0;
     public float maxPlaceTime;
 
     void Start()
     {
+        // Set default values
         spikes = 0;
         placingScore = 0;
     }
     void Update()
     {
-        spikesLeft.text = "Spikes: " + spikes.ToString() + "/3";
-        spikesBar.value = placingScore;
-        spikesBar.maxValue = maxPlaceTime;
-
         if (placingScore == 0)
         {
             // Movement inputs
