@@ -240,6 +240,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   level: {fileID: 788897039}
+  cf: {fileID: 0}
   houses: 8
   cubeMaxHealth: 25
   cubeHealth: 0
@@ -2623,7 +2624,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 956878447}
-  - component: {fileID: 956878448}
   m_Layer: 0
   m_Name: PupilPivot
   m_TagString: Untagged
@@ -2638,26 +2638,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 956878446}
-  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.13000004, y: -0.12, z: -1}
   m_LocalScale: {x: 0.5836267, y: 0.5836267, z: 0.5836267}
   m_Children:
   - {fileID: 2017347397}
   m_Father: {fileID: 193791038}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
---- !u!114 &956878448
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 956878446}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d8dce8c1f7342d44853358fb3c7fc57, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1077883577
 GameObject:
   m_ObjectHideFlags: 0
@@ -3002,6 +2990,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gm: {fileID: 56085379}
+  cf: {fileID: 1751392564}
   pm: {fileID: 756342203}
   spikeDamage: 1
 --- !u!1 &1164069847
@@ -4186,12 +4175,14 @@ MonoBehaviour:
     m_RotationOrder: 4
   careful: {fileID: 477229287}
   eye: {fileID: 2017347396}
+  eyePivot: {fileID: 956878446}
   fallDuration: 4
   timeBeforeFall: 3
   minTBF: 2
   timeDecayAmount: 0.05
+  falling: 0
   direction: {x: 0, y: 0, z: 0}
-  maxEyeDistance: 5
+  oldDirection: {x: 0, y: 0, z: 0}
   lookSpeed: 0.005
 --- !u!61 &1751392565
 BoxCollider2D:
@@ -4998,6 +4989,7 @@ GameObject:
   - component: {fileID: 2017347397}
   - component: {fileID: 2017347398}
   - component: {fileID: 2017347399}
+  - component: {fileID: 2017347400}
   m_Layer: 0
   m_Name: EyePupil
   m_TagString: Untagged
@@ -5013,7 +5005,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2017347396}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 956878447}
@@ -5086,3 +5078,17 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
+--- !u!114 &2017347400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2017347396}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d8dce8c1f7342d44853358fb3c7fc57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveEyeFromCenter: {fileID: 2017347399}
+  cf: {fileID: 1751392564}

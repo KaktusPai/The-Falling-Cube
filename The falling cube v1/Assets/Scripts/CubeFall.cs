@@ -10,6 +10,7 @@ public class CubeFall : MonoBehaviour
     public AnimationCurve curve;
     public GameObject careful;
     public GameObject eye;
+    public GameObject eyePivot;
     SpriteRenderer spriteRenderer;
     // Falling variables
     float cellSize = 4f;
@@ -17,44 +18,17 @@ public class CubeFall : MonoBehaviour
     public float timeBeforeFall = 3f;
     public float minTBF = 2f;
     public float timeDecayAmount = 0.05f;
-    public static bool falling;
+    public bool falling;
     public Vector3 direction;
-    public Vector3 oldDirection;
     // Eye looking
-    public float maxEyeDistance = 0.6f;
     public float lookSpeed = 0.0025f;
-    float xDestination; //= lookWhere.x * maxEyeDistance;
-    float yDestination; //= lookWhere.y * maxEyeDistance;
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.material.color = Color.white;
         StartCoroutine(FallInRandomDirection());
         pm.spikes = 0;
-        xDestination = direction.x * maxEyeDistance;
-        yDestination = direction.y * maxEyeDistance;
     }
-
-    private void FixedUpdate()
-    {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        if (gm.cubeHealth <= 0)
-        {
-            Destroy(this);
-        }
-        /* Turning the eye with code
-        if (falling == false)
-        {
-            EyeLook(direction, false);
-        } else if (falling == true)
-        {
-            EyeLook(direction, true); 
-        }*/
-
-        // Turning the eye through animation
-
-    }
-
     IEnumerator FallInRandomDirection()
     {
         // BEFORE FALLING WAIT TIME
@@ -70,14 +44,12 @@ public class CubeFall : MonoBehaviour
         if (endPos.x < -6 || endPos.x > 8 || endPos.y < -5 || endPos.y > 4) //If endPos is near the edges -  
         {
             StartCoroutine(FallInRandomDirection()); // - restart the process
-             yield break;
+            yield break;
         }
         // TURN THE EYE TO NEW POSITION
         careful.SetActive(true);
         careful.transform.position = endPos;
-
-        xDestination = direction.x * maxEyeDistance;
-        yDestination = direction.y * maxEyeDistance;
+        RotateEyePivot();
 
         // AFTER FALLING WAIT TIME
         yield return new WaitForSeconds(timeBeforeFall);
@@ -86,7 +58,6 @@ public class CubeFall : MonoBehaviour
         print("THE CUBE FALLS");
         careful.SetActive(false);
         float t = 0;
-        oldDirection = direction;
 
         while (t < 1)
         {
@@ -105,16 +76,33 @@ public class CubeFall : MonoBehaviour
             StartCoroutine(FallInRandomDirection());
         }
     }
-
-    void EyeLook(bool returning) // Non-animated eyemovement
+    void RotateEyePivot() // Animated eyemovement
     {
-        if (returning == false) // While not in end position
+        Quaternion endRotation = new Quaternion();
+        float degrees = 0;
+
+        endRotation.Set(0, 0, 0, 0);
+        if (direction == Vector3.up)
         {
-             eye.
-        } 
-        if (returning == true) // Return to 0,0
+            degrees = -90;
+            print("looking up");
+        }
+        else if (direction == -Vector3.up)
         {
-             
-        } 
+            degrees = 90;
+            print("looking down");
+        }
+        else if (direction == -Vector3.right)
+        {
+            degrees = 0;
+            print("looking left");
+        }
+        else if (direction == Vector3.right)
+        {
+            degrees = 180;
+            print("looking right");
+        }
+        endRotation.eulerAngles = Vector3.forward * degrees;
+        eyePivot.transform.rotation = endRotation;
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class CubeColliding : MonoBehaviour
 {
     public GameManager gm;
+    public CubeFall cf;
     public PlayerMechanics pm;
     public int spikeDamage = 1; 
     void Start()
@@ -14,7 +15,7 @@ public class CubeColliding : MonoBehaviour
     void OnTriggerEnter2D(Collider2D collision)
     {
         print("collided with " + collision.tag);
-        if (CubeFall.falling == true)
+        if (cf.falling == true)
         {
 
             if (collision.gameObject.tag == "Spike")

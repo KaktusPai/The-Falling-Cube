@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
 {
     //References 
     public GameObject level;
+    public CubeFall cf;
     //Game vars
     public int houses = 8;
     public int cubeMaxHealth = 9;
