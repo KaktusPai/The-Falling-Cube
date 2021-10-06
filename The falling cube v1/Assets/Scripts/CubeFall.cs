@@ -19,15 +19,20 @@ public class CubeFall : MonoBehaviour
     public float timeDecayAmount = 0.05f;
     public static bool falling;
     public Vector3 direction;
+    public Vector3 oldDirection;
     // Eye looking
     public float maxEyeDistance = 0.6f;
     public float lookSpeed = 0.0025f;
+    float xDestination; //= lookWhere.x * maxEyeDistance;
+    float yDestination; //= lookWhere.y * maxEyeDistance;
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.material.color = Color.white;
         StartCoroutine(FallInRandomDirection());
         pm.spikes = 0;
+        xDestination = direction.x * maxEyeDistance;
+        yDestination = direction.y * maxEyeDistance;
     }
 
     private void FixedUpdate()
@@ -37,14 +42,17 @@ public class CubeFall : MonoBehaviour
         {
             Destroy(this);
         }
-        // Turning the eye
+        /* Turning the eye with code
         if (falling == false)
         {
             EyeLook(direction, false);
         } else if (falling == true)
         {
-            EyeLook(direction, true);
-        }
+            EyeLook(direction, true); 
+        }*/
+
+        // Turning the eye through animation
+
     }
 
     IEnumerator FallInRandomDirection()
@@ -68,6 +76,9 @@ public class CubeFall : MonoBehaviour
         careful.SetActive(true);
         careful.transform.position = endPos;
 
+        xDestination = direction.x * maxEyeDistance;
+        yDestination = direction.y * maxEyeDistance;
+
         // AFTER FALLING WAIT TIME
         yield return new WaitForSeconds(timeBeforeFall);
 
@@ -75,6 +86,7 @@ public class CubeFall : MonoBehaviour
         print("THE CUBE FALLS");
         careful.SetActive(false);
         float t = 0;
+        oldDirection = direction;
 
         while (t < 1)
         {
@@ -94,17 +106,15 @@ public class CubeFall : MonoBehaviour
         }
     }
 
-    void EyeLook(Vector3 lookWhere, bool returning)
+    void EyeLook(bool returning) // Non-animated eyemovement
     {
-        float xDestination = lookWhere.x * maxEyeDistance;
-        float yDestination = lookWhere.x * maxEyeDistance;
-        if (returning == false && eye.transform.position.x <= xDestination || eye.transform.position.y <= yDestination) // While not in end position
+        if (returning == false) // While not in end position
         {
-             eye.transform.position += lookWhere * Time.deltaTime;
+             eye.
         } 
-        if (returning == true && eye.transform.position != Vector3.zero) // Return to 0,0
+        if (returning == true) // Return to 0,0
         {
-             eye.transform.position -= lookWhere * Time.deltaTime;
+             
         } 
     }
 }
