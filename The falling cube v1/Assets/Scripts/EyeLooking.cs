@@ -6,17 +6,25 @@ public class EyeLooking : MonoBehaviour
 {
     public Animation moveEyeFromCenter;
     public CubeFall cf;
-    void Start()
-    {
-        
-    }
 
     void Update()
     {
         //If 
-        if (cf.falling == true)
+        if (cf.falling == false)
         {
-
+            moveEyeFromCenter.Play();
+        } else if (cf.falling == true)
+        {
+            moveEyeFromCenter.Stop();
         }
+    }
+    public void EyeInPlace()
+    {
+        
+    }
+
+    public void MoveEyeBack()
+    {
+        
     }
 }

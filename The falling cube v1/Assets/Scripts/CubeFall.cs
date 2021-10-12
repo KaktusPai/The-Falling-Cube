@@ -26,9 +26,13 @@ public class CubeFall : MonoBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.material.color = Color.white;
-        StartCoroutine(FallInRandomDirection());
+        if (gm.gameStart == true)
+        {
+            StartCoroutine(FallInRandomDirection());
+        }
         pm.spikes = 0;
     }
+
     IEnumerator FallInRandomDirection()
     {
         // BEFORE FALLING WAIT TIME
@@ -71,7 +75,7 @@ public class CubeFall : MonoBehaviour
         timeBeforeFall = Mathf.Max(timeBeforeFall, minTBF);
 
         // Repeat the couroutine instead of stopping it
-        if (gm.gameLost == false)
+        if (gm.gameLost == false && gm.gameWon == false)
         {
             StartCoroutine(FallInRandomDirection());
         }
@@ -104,5 +108,9 @@ public class CubeFall : MonoBehaviour
         }
         endRotation.eulerAngles = Vector3.forward * degrees;
         eyePivot.transform.rotation = endRotation;
+    }
+    public void StartFalling()
+    {
+        StartCoroutine(FallInRandomDirection());
     }
 }

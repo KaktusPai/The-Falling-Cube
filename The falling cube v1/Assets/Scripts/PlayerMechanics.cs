@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class PlayerMechanics : MonoBehaviour
 {
+    public GameManager gm;
     // Player movement vars
     public float moveSpeed = 5f;
     public Rigidbody2D rb;
@@ -26,34 +27,38 @@ public class PlayerMechanics : MonoBehaviour
     }
     void Update()
     {
-        if (placingScore == 0)
+        if (gm.gameStart == true)
         {
-            // Movement inputs
-            movement.x = Input.GetAxisRaw("Horizontal");
-            movement.y = Input.GetAxisRaw("Vertical");
-        } else
-        {
-            // Can't move when placing
-            movement = Vector3.zero;
-            print("Placing 0 cant move");
-        }
-
-        if (Input.GetButton("Fire1") && spikes < maxSpikes)
-        {
-            placingScore += 1 * Time.deltaTime;
-            if (placingScore >= maxPlaceTime)
+            if (placingScore == 0)
             {
-                Instantiate(spike, this.transform.position, this.transform.rotation);
-                spikes += 1;
+                // Movement inputs
+                movement.x = Input.GetAxisRaw("Horizontal");
+                movement.y = Input.GetAxisRaw("Vertical");
+            }
+            else
+            {
+                // Can't move when placing
+                movement = Vector3.zero;
+                print("Placing 0 cant move");
+            }
+
+            if (Input.GetButton("Fire1") && spikes < maxSpikes)
+            {
+                placingScore += 1 * Time.deltaTime;
+                if (placingScore >= maxPlaceTime)
+                {
+                    Instantiate(spike, this.transform.position, this.transform.rotation);
+                    spikes += 1;
+                    placingScore = 0;
+                }
+            }
+            else
+            {
                 placingScore = 0;
             }
         }
-        else
-        {
-            placingScore = 0;
-        }
-    }
 
+    }
     void FixedUpdate()
     {
         rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);

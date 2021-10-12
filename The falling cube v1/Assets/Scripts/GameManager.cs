@@ -9,13 +9,16 @@ public class GameManager : MonoBehaviour
     //References 
     public GameObject level;
     public CubeFall cf;
+    public GameUI gui;
     //Game vars
     public int houses = 8;
+    public int maxHouses = 8;
     public int cubeMaxHealth = 9;
     public int cubeHealth;
     // "State" bools
+    public bool gameStart = false;
+    public static bool playAgain;
     public bool dead = false;
-
     public bool gameWon = false;
     public bool gameLost = false;
 
@@ -25,35 +28,40 @@ public class GameManager : MonoBehaviour
         dead = false;
         gameWon = false;
         cubeHealth = cubeMaxHealth;
-        houses = 8;
+        houses = maxHouses;
         cubeHealth = cubeMaxHealth;
+        if (playAgain == true)
+        {
+            gameStart = true;
+        }
+        playAgain = false;
     }
 
     void Update()
     {
-        if (houses <= 0 || dead == true)
+        if (gameStart == true)
         {
-            Lose();
-        } 
+            if (houses <= 0 || dead == true)
+            {
+                Lose();
+                gameLost = true;
+            }
 
-        if (cubeHealth <= 0)
-        {
-            Win();
+            if (cubeHealth <= 0)
+            {
+                Win();
+                gameWon = true;
+            }
         }
     }
 
     void Lose()
     {
-        gameLost = true;
+        
     }
 
     void Win()
     {
-        gameWon = true;
-    }
-
-    public void RestartGame()
-    {
-        SceneManager.LoadScene(1);
+        
     }
 }
