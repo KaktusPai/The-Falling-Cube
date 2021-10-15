@@ -34,7 +34,6 @@ public class GameManager : MonoBehaviour
         {
             gameStart = true;
         }
-        playAgain = false;
     }
 
     void Update()

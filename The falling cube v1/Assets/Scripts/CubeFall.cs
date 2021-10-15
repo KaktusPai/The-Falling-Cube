@@ -37,7 +37,7 @@ public class CubeFall : MonoBehaviour
     {
         // BEFORE FALLING WAIT TIME
         falling = false;
-        print("THE CUBE RESTS, FOR NOW");
+        //print("THE CUBE RESTS, FOR NOW");
         // CHOOSE RANDOM DIRECTION between up, -up (down), right and -right(left)
         direction = Utility.Choose(transform.up, transform.right, -transform.up, -transform.right);
         //Variables for begin and end positon
@@ -59,7 +59,7 @@ public class CubeFall : MonoBehaviour
         yield return new WaitForSeconds(timeBeforeFall);
 
         falling = true;
-        print("THE CUBE FALLS");
+        //print("THE CUBE FALLS");
         careful.SetActive(false);
         float t = 0;
 
@@ -89,22 +89,22 @@ public class CubeFall : MonoBehaviour
         if (direction == Vector3.up)
         {
             degrees = -90;
-            print("looking up");
+            //print("looking up");
         }
         else if (direction == -Vector3.up)
         {
             degrees = 90;
-            print("looking down");
+            //print("looking down");
         }
         else if (direction == -Vector3.right)
         {
             degrees = 0;
-            print("looking left");
+            //print("looking left");
         }
         else if (direction == Vector3.right)
         {
             degrees = 180;
-            print("looking right");
+            //print("looking right");
         }
         endRotation.eulerAngles = Vector3.forward * degrees;
         eyePivot.transform.rotation = endRotation;

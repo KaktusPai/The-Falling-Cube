@@ -10,13 +10,16 @@ public class GameUI : MonoBehaviour
     public GameManager gm;
     public PlayerMechanics pm;
     public CubeFall cf;
+    public Abilities a;
     // Level select / pregame UI
     public GameObject preGameUI;
+    public Animator pregameUIAnimator;
     // Game UI
     public Slider healthSlider;
     public Text housesText;
     public Text spikesLeft;
     public Slider spikesBar;
+    public Slider speedBar;
     // Game End UI
     public Button retryButton;
     public GameObject endUI;
@@ -42,6 +45,10 @@ public class GameUI : MonoBehaviour
         spikesLeft.text = "Spikes: " + pm.spikes.ToString() + "/3";
         spikesBar.value = pm.placingScore;
         spikesBar.maxValue = pm.maxPlaceTime;
+        // Speeding and slowing down
+        speedBar.value = a.cooldown;
+        speedBar.maxValue = a.maxCooldown;
+        
         // Update end UI
         if (gm.dead == true)
         {
@@ -58,12 +65,9 @@ public class GameUI : MonoBehaviour
     }
     public void PreGameUI()
     {
-        if (GameManager.playAgain == false)
-        {
-            print("Pregame UI active");
-            endUI.gameObject.SetActive(false);
-            preGameUI.gameObject.SetActive(true);
-        }
+        print("Pregame UI active");
+        endUI.gameObject.SetActive(false);
+        preGameUI.gameObject.SetActive(true);
     }
 
     public void LoseUI() 
@@ -85,6 +89,12 @@ public class GameUI : MonoBehaviour
         SceneManager.LoadScene(1);
     }
 
+    public void LoadDifficultySelect()
+    {
+        GameManager.playAgain = false;
+        SceneManager.LoadScene(1);
+    }
+
     public void LoadMenu()
     {
         SceneManager.LoadScene(0);
@@ -99,5 +109,10 @@ public class GameUI : MonoBehaviour
         gm.gameStart = true;
         preGameUI.SetActive(false);
         cf.StartFalling();
+    }
+    // Pregame UI up down
+    void pauseAnimationEvent()
+    {
+        pregameUIAnimator.enabled = false;
     }
 }
