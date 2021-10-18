@@ -6,18 +6,15 @@ using UnityEngine.EventSystems;
 public class Abilities: MonoBehaviour, IPointerDownHandler //IPointerUpHandler
 {
     public PlayerMechanics pm;
+    public GameUI gui;
     public int buttonIndex;
     public bool holdingPressOnButton = false;
     bool justPressed = false;
     // Cooldown abilities
+    public float abilityDuration;
     public float cooldown;
-    public float maxCooldown;
     public bool recharging = false;
 
-    void Start()
-    {
-        cooldown = maxCooldown;
-    }
     void Update()
     {
         // Mouse up      
@@ -30,37 +27,6 @@ public class Abilities: MonoBehaviour, IPointerDownHandler //IPointerUpHandler
             } 
         }
         ButtonPressAbilities();
-
-        // ABILITIES - COOLDOWN
-        // Speeding up
-        if (pm.speedingUp == true)
-        {
-            if (cooldown > 0 && recharging == false)
-            {
-                pm.MultiplyMoveSpeed(pm.speedUp);
-                cooldown -= Time.deltaTime;
-                print("Beginning speedup duration");
-            }
-            else if (cooldown < 0 && recharging == false)
-            {
-                recharging = true;
-                print("Start recharging");
-            }
-            if (recharging == true && cooldown < maxCooldown)
-            {
-                cooldown += 0.5f * Time.deltaTime;
-                pm.moveSpeed = pm.maxMoveSpeed;
-                print("Recharge at half speed");
-            }
-            else if (recharging == true && cooldown >= maxCooldown)
-            {
-                recharging = false;
-                cooldown = maxCooldown;
-                pm.speedingUp = false;
-                pm.moveSpeed = pm.maxMoveSpeed;
-                print("Cooldown done");
-            }
-        }
     }
     public void OnPointerDown(PointerEventData eventData)
     {
@@ -81,8 +47,10 @@ public class Abilities: MonoBehaviour, IPointerDownHandler //IPointerUpHandler
             // When speed button clicked
             if (buttonIndex == 1)
             {
-                pm.MultiplyMoveSpeed(pm.speedUp);
-                pm.speedingUp = true;
+                if (pm.speedingUp == false)
+                {
+                    StartCoroutine(SpeedUp());
+                }
                 print("YEAH FAST WE GO FAST NOW YEAH");
             }
             //Spike ability
@@ -93,10 +61,16 @@ public class Abilities: MonoBehaviour, IPointerDownHandler //IPointerUpHandler
             // ABILITIES - ON MOUSEUP
         } else if (holdingPressOnButton == false && justPressed == true)
         {
+            // Move slower
             if (buttonIndex == 0)
             {
+                if (gui.isFast == 0)
+                {
+
+                }
                 pm.moveSpeed = pm.maxMoveSpeed;
             }
+            // Spike ability
             if (buttonIndex == 2)
             {
                 pm.placingScore = 0;
@@ -104,5 +78,21 @@ public class Abilities: MonoBehaviour, IPointerDownHandler //IPointerUpHandler
             }
             justPressed = false;
         }
+    }
+    IEnumerator SpeedUp()
+    {
+        // In speedup coroutine
+        pm.speedingUp = true;
+        pm.MultiplyMoveSpeed(pm.speedUp);
+        print("start go fast");
+        gui.isFast = true;
+        //pm.MultiplyMoveSpeed(pm.speedUp);
+        yield return new WaitForSeconds(abilityDuration);
+        pm.moveSpeed = pm.maxMoveSpeed;
+        gui.isFast = false;
+        print("speed normal and cooldown");
+        yield return new WaitForSeconds(cooldown);
+        pm.speedingUp = false;
+        print("cooldown ended, you may reuse");
     }
 }

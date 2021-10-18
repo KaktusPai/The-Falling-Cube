@@ -19,7 +19,10 @@ public class GameUI : MonoBehaviour
     public Text housesText;
     public Text spikesLeft;
     public Slider spikesBar;
+    // Game cooldown abilites UI
     public Slider speedBar;
+    public bool isFast = false;
+
     // Game End UI
     public Button retryButton;
     public GameObject endUI;
@@ -28,6 +31,8 @@ public class GameUI : MonoBehaviour
 
     public void Start()
     {
+        speedBar.maxValue = a.cooldown;
+        speedBar.value = 0;
         endUI.gameObject.SetActive(false);
         if (GameManager.playAgain == false)
         {
@@ -45,10 +50,6 @@ public class GameUI : MonoBehaviour
         spikesLeft.text = "Spikes: " + pm.spikes.ToString() + "/3";
         spikesBar.value = pm.placingScore;
         spikesBar.maxValue = pm.maxPlaceTime;
-        // Speeding and slowing down
-        speedBar.value = a.cooldown;
-        speedBar.maxValue = a.maxCooldown;
-        
         // Update end UI
         if (gm.dead == true)
         {
@@ -61,6 +62,22 @@ public class GameUI : MonoBehaviour
         if (gm.gameWon == true)
         {
             WinUI();
+        }
+    }
+    void FixedUpdate()
+    {
+        // Speeding up
+        if (pm.speedingUp == false && isFast == false)
+        {
+            speedBar.value = 0;
+        }
+        else if (isFast == true)
+        {
+            speedBar.value = a.cooldown;
+        }
+        else if (pm.speedingUp == true && isFast == false)
+        {
+            speedBar.value -= 1 * Time.deltaTime;
         }
     }
     public void PreGameUI()

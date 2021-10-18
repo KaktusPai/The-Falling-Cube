@@ -6,6 +6,9 @@ using UnityEngine.SceneManagement;
 
 public class PlayerMechanics : MonoBehaviour
 {
+    // References
+    public Animator animator;
+    public SpriteRenderer sr;
     public GameManager gm;
     // Player movement vars
     public float moveSpeed = 5f;
@@ -13,6 +16,7 @@ public class PlayerMechanics : MonoBehaviour
     public Rigidbody2D rb;
     public Transform player;
     Vector2 movement;
+    public bool playerIsFlipped;
     // Slowdown and speedup
     public float slowDown = 0.75f;
     public float speedUp = 1.25f;
@@ -23,6 +27,7 @@ public class PlayerMechanics : MonoBehaviour
     public int maxSpikes = 3;
     public float placingScore = 0;
     public float maxPlaceTime;
+
 
     void Start()
     {
@@ -48,6 +53,21 @@ public class PlayerMechanics : MonoBehaviour
                 print("Placing 0 cant move");
             }
         }
+        // Set animator variables
+        animator.SetFloat("Speed", movement.sqrMagnitude);
+        //print(movement.x + " , " + movement.y);
+        // When moving left, flip - When moving right, unflip
+        Quaternion zero = new Quaternion(0, 0, 0, 0);
+        Quaternion flippedY = new Quaternion(0, 180, 0, 0);
+        if (movement.x == -1) 
+        {
+            transform.rotation = flippedY;
+            playerIsFlipped = true;
+        } else if (movement.x == 1) 
+        {
+            transform.rotation = zero;
+            playerIsFlipped = false;
+        }
     }
     void FixedUpdate()
     {
@@ -65,7 +85,16 @@ public class PlayerMechanics : MonoBehaviour
             placingScore += 1 * Time.deltaTime;
             if (placingScore >= maxPlaceTime)
             {
-                Instantiate(spike, this.transform.position, this.transform.rotation);
+                Vector3 spawnOffset = new Vector3(0.5f, 0, 0);
+                if (playerIsFlipped == true) // Place on the left side of the player
+                {
+                    Instantiate(spike, this.transform.position + -spawnOffset, this.transform.rotation);
+                } 
+                if (playerIsFlipped == false) // Place on the right side
+                {
+                    print("PLACING RIGHT");
+                    Instantiate(spike, this.transform.position + spawnOffset, this.transform.rotation);
+                }
                 spikes += 1;
                 placingScore = 0;
             }
