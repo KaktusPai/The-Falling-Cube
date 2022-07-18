@@ -19,9 +19,6 @@ public class GameUI : MonoBehaviour
     public Text housesText;
     public Text spikesLeft;
     public Slider spikesBar;
-    // Game cooldown abilites UI
-    public Slider speedBar;
-    public bool isFast = false;
 
     // Game End UI
     public Button retryButton;
@@ -31,8 +28,6 @@ public class GameUI : MonoBehaviour
 
     public void Start()
     {
-        speedBar.maxValue = a.cooldown;
-        speedBar.value = 0;
         endUI.gameObject.SetActive(false);
         if (GameManager.playAgain == false)
         {
@@ -64,22 +59,7 @@ public class GameUI : MonoBehaviour
             WinUI();
         }
     }
-    void FixedUpdate()
-    {
-        // Speeding up
-        if (pm.speedingUp == false && isFast == false)
-        {
-            speedBar.value = 0;
-        }
-        else if (isFast == true)
-        {
-            speedBar.value = a.cooldown;
-        }
-        else if (pm.speedingUp == true && isFast == false)
-        {
-            speedBar.value -= 1 * Time.deltaTime;
-        }
-    }
+
     public void PreGameUI()
     {
         print("Pregame UI active");

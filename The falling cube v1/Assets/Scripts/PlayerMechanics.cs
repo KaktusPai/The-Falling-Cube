@@ -28,7 +28,6 @@ public class PlayerMechanics : MonoBehaviour
     public float placingScore = 0;
     public float maxPlaceTime;
 
-
     void Start()
     {
         // Set default values
